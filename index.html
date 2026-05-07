@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>甜原雀庄 · 雀神争霸赛</title>
+<script>
+// ===== 数据区 — 改这里就行 =====
+const DATA = {
+  clubName: '甜原雀庄',
+  league: '雀神争霸赛',
+  subtitle: '2023-2026 全赛季',
+  slogan: '以牌会友 · 雀鸣甜原',
+  desc: '甜原雀庄，一个以麻将结缘的小圈子。从2023到2026，四年雀神争霸，有欢笑有遗憾，有连庄有翻盘。',
+  photos: ['雀庄合影.jpg','雀庄合影_2.jpg','雀庄合影_3.jpg'],
+  members: [
+    {name:'王筱甜',v:[2662,3190,3683,-94],tag:'🏆 四冠王 · 总榜第一',sta:[97,88,82,95,78],cmt:'四连冠统治级表现，雀庄当之无愧的第一人。每年都能保持超高水准，发挥极其稳定，是所有人的标杆。'},
+    {name:'博哥',v:[1537,1153,1869,167],tag:'🥈 铁打亚军',sta:[82,78,70,88,62],cmt:'万年老二但实力不容小觑，每年稳定输出正分，是唯一能对王筱甜构成威胁的人。2025赛季1869分堪称神级表现。'},
+    {name:'老航',v:[780,982,200,344],tag:'🥉 稳如老狗',sta:[72,68,76,78,58],cmt:'不温不火却稳扎稳打，从不大起大落。麻将界的「稳定先生」，也是雀庄不可或缺的中坚力量。'},
+    {name:'雪原',v:[-76,629,1284,-18],tag:'🎲 2025最佳进步',sta:[58,62,48,72,92],cmt:'2025赛季迎来大爆发，1284分刷新个人纪录，当选赛季最佳进步。从负分到千分俱乐部的蜕变只用了两年。'},
+    {name:'基佬',v:[-53,309,0,0],tag:'早期活跃',sta:[48,42,52,32,42],cmt:'短暂参赛但留下了深刻印象，2024赛季+309的高光时刻令人难忘。两赛季总分为正，效率不俗。'},
+    {name:'二门',v:[-74,-354,0,0],tag:'早期活跃',sta:[38,32,42,28,32],cmt:'早期老玩家，虽总战绩为负但比赛气质极佳，是雀庄的开心果。2023赛季-74已属不错。'},
+    {name:'意林',v:[-509,147,-437,0],tag:'',sta:[32,38,28,42,38],cmt:'2024赛季曾打出+147的正分，证明过自己的实力。可惜其他赛季起伏较大，稳定性是最大课题。'},
+    {name:'小程',v:[0,-1763,-112,371],tag:'✨ 2026赛季冠军',sta:[62,58,42,58,88],cmt:'2026赛季以+371夺得赛季冠军，完美逆袭！从-1763的深渊爬到赛季第一，堪称雀庄最励志的故事。'},
+    {name:'奇',v:[0,-1949,142,-46],tag:'',sta:[28,32,22,38,42],cmt:'2025赛季+142是全赛季为数不多的亮点。可惜其他赛季表现不佳，潜力仍有待挖掘。'},
+    {name:'纯柏',v:[-507,-801,-456,-92],tag:'四年全勤',sta:[32,28,38,52,32],cmt:'四年全勤，毅力可嘉。虽战绩不高但始终坚持参与，是雀庄的基石成员。2024赛季-801是生涯低谷。'},
+    {name:'朱大哥',v:[-1815,-159,-559,253],tag:'2026 强势回归',sta:[42,52,32,28,72],cmt:'2026赛季休赛归来斩获+253，证明老将实力依旧。不服输的老大哥，2023赛季-1815确实有些惨烈。'},
+    {name:'小姜',v:[-475,-759,-1614,0],tag:'2026休赛',sta:[22,28,18,28,22],cmt:'早期活跃成员，2023-2025连续参赛，可惜运气总差那么一点点。2025赛季-1614是雀庄单赛季最低分。'},
+    {name:'子书',v:[-267,-1475,-1025,-252],tag:'',sta:[18,22,18,38,28],cmt:'全勤参赛但运气欠佳，总在关键时刻被自摸。四年未曾取得正分赛季，心理素质有待提升。'},
+    {name:'司老师',v:[-1203,-1186,-2200,-605],tag:'四年全勤',sta:[12,18,8,48,18],cmt:'四年全勤，论坚持没人比得过司老师。虽然战绩垫底，但从未放弃的精神值得所有人敬佩。'},
+  ],
+  champions: {2023:'王筱甜',2024:'王筱甜',2025:'王筱甜',2026:'小程'},
+  highlights: {
+    2023:'首届雀神争霸赛，王筱甜以2662分碾压开局',
+    2024:'王筱甜卫冕成功，雪原首次转正+629',
+    2025:'雪原爆发拿下1284分，王筱甜三连冠，博哥1869创个人新高',
+    2026:'小程翻红+371夺得赛季冠军，朱大哥休赛回归+253'
+  }
+};
+const DIMS = ['稳定','进攻','防守','持久','潜力'];
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d0d0d;color:#e8dcc8;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;padding-bottom:3rem}
+.sec{padding:1rem;max-width:600px;margin:0 auto}
+h2{color:#d4a853;font-size:1rem;margin:1rem 0 .6rem;border-left:3px solid #d4a853;padding-left:.6rem}
+h2:first-of-type{margin-top:0}
+
+/* 头部 */
+.header{text-align:center;padding:2rem 1rem .5rem;position:relative}
+.header h1{font-size:1.8rem;background:linear-gradient(135deg,#d4a853,#f0d080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.header p{color:#a09078;font-size:.85rem;margin-top:.3rem}
+.header .slogan{color:#d4a853;font-size:.75rem;margin-top:.2rem;opacity:.7}
+
+/* 合影左右滑动 */
+.photo-zone{display:flex;overflow-x:auto;gap:.6rem;padding:.5rem 1rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.photo-zone img{height:200px;border-radius:10px;scroll-snap-align:start;flex-shrink:0;border:1px solid #333}
+
+/* 简介 */
+.intro{color:#a09078;font-size:.82rem;line-height:1.6;padding:0 1rem;max-width:600px;margin:0 auto}
+
+/* 成员卡片网格 */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;max-width:600px;margin:0 auto;padding:0 1rem}
+.card{background:#1a1a1a;border-radius:10px;padding:.7rem;border:1px solid #2a2a2a;transition:.2s}
+.card:active{transform:scale(.98)}
+.card .top{display:flex;justify-content:space-between;align-items:center}
+.card .name{font-size:.95rem;font-weight:600}
+.card .total{font-size:1.1rem;font-weight:700}
+.card .tag{font-size:.65rem;color:#7a6a58;margin-top:.1rem}
+.card .bars{margin:.35rem 0}
+.card .bar-row{display:flex;align-items:center;gap:.3rem;margin:2px 0}
+.card .bar-label{font-size:.55rem;color:#7a6a58;width:2em;text-align:right}
+.card .bar-track{flex:1;height:4px;background:#2a2a2a;border-radius:2px;overflow:hidden}
+.card .bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#d4a853,#f0d080)}
+.card .cmt{font-size:.65rem;color:#6a5a48;line-height:1.4;margin-top:.2rem;border-top:1px solid #222;padding-top:.25rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:1.8em}
+.positive{color:#4ecb71}
+.negative{color:#e85454}
+.zero{color:#5a5a5a}
+
+/* 赛季详情 */
+.sbox{background:#1a1a1a;border-radius:10px;padding:.7rem;margin-bottom:.5rem;border:1px solid #2a2a2a}
+.sbox h3{font-size:.9rem;color:#d4a853;padding-left:.5rem;border-left:3px solid #d4a853}
+.sbox p{font-size:.78rem;color:#a09078;margin-top:.2rem;line-height:1.5}
+.sbox .champ{font-size:.7rem;color:#4ecb71;margin-top:.1rem}
+
+/* 麻将装饰分割 */
+.divider{text-align:center;color:#2a2a2a;font-size:.8rem;padding:.5rem 0;letter-spacing:4px;user-select:none}
+
+/* 总榜表 */
+.tbl-wrap{overflow-x:auto;max-width:600px;margin:0 auto;padding:0 1rem}
+table{width:100%;border-collapse:collapse;font-size:.75rem}
+th{background:#1a1a1a;color:#d4a853;padding:.35rem .2rem;text-align:center;font-weight:500;position:sticky;top:0}
+td{text-align:center;padding:.3rem .15rem;border-bottom:1px solid #222}
+tr:nth-child(even){background:#111}
+.rank{color:#5a5a5a;font-size:.65rem}
+
+/* 底部 */
+.footer{text-align:center;padding:2rem 1rem;color:#3a3a3a;font-size:.7rem}
+.totop{position:fixed;bottom:1rem;right:1rem;background:#d4a853;color:#0d0d0d;border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;opacity:.7}
+</style>
+</head>
+<body>
+
+<audio id="bgm" src="bgm.mp3" loop></audio>
+
+<div class="header">
+  <h1>🀄 甜原雀庄</h1>
+  <p>雀神争霸赛 · 2023-2026</p>
+  <div class="slogan">以牌会友 · 雀鸣甜原</div>
+</div>
+
+<!-- 合影 -->
+<div class="photo-zone" id="photoZone"></div>
+<div class="divider">🀄 🀄 🀄 🀄 🀄</div>
+
+<!-- 简介 -->
+<div class="intro" id="introText"></div>
+<div class="divider">🀄 🀄 🀄 🀄 🀄</div>
+
+<!-- 成员 -->
+<h2 class="sec">👥 雀庄全员 · 14人</h2>
+<div class="mgrid" id="mGrid"></div>
+<div class="divider">🀄 🀄 🀄 🀄 🀄</div>
+
+<!-- 总榜 -->
+<h2 class="sec">🏆 总战绩榜</h2>
+<div class="tbl-wrap"><table id="boardTbl"></table></div>
+<div class="divider">🀄 🀄 🀄 🀄 🀄</div>
+
+<!-- 赛季 -->
+<h2 class="sec">📊 赛季详情</h2>
+<div class="sec" id="seasonList"></div>
+
+<div class="footer">甜原雀庄 · 以牌会友</div>
+<button class="totop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+const YRS = ['2023','2024','2025','2026'];
+const C4 = ['#e85454','#e07848','#d4a853','#4ecb71'];
+const MEDALS = ['🥇','🥈','🥉'];
+
+// 合影
+const pz = document.getElementById('photoZone');
+DATA.photos.forEach(p=>{
+  const img=document.createElement('img');img.src=p;img.alt='合影';
+  img.onerror=function(){this.style.display='none'};
+  pz.appendChild(img);
+});
+if(!DATA.photos.length) pz.innerHTML='<div style="color:#555;padding:.5rem">暂无合影</div>';
+
+// 简介
+document.getElementById('introText').textContent = DATA.desc;
+
+// 渲染成员
+const mg = document.getElementById('mGrid');
+const sorted = [...DATA.members].sort((a,b)=>(b.v.reduce((s,x)=>s+x,0))-(a.v.reduce((s,x)=>s+x,0)));
+sorted.forEach((m,i)=>{
+  const t = m.v.reduce((s,x)=>s+x,0);
+  const div = document.createElement('div');div.className='card';
+  const tc = t>0?'positive':(t<0?'negative':'zero');
+  const medal = i<3?MEDALS[i]:'';
+  let bars='';
+  m.sta.forEach((v,j)=>{
+    bars+=`<div class="bar-row"><span class="bar-label">${DIMS[j]}</span><div class="bar-track"><div class="bar-fill" style="width:${v}%"></div></div></div>`;
+  });
+  div.innerHTML=`<div class="top"><span class="name">${medal} ${m.name}</span><span class="total ${tc}">${t>0?'+':''}${t}</span></div><div class="tag">${m.tag||' '}</div><div class="bars">${bars}</div><div class="cmt">${m.cmt}</div>`;
+  mg.appendChild(div);
+});
+
+// 总榜
+const tbl = document.getElementById('boardTbl');
+let h='<tr><th>#</th><th>选手</th>';
+YRS.forEach(y=>h+=`<th>${y}</th>`);
+h+='<th>总计</th></tr>';
+sorted.forEach((m,i)=>{
+  const t=m.v.reduce((s,x)=>s+x,0);
+  const tc=t>0?'positive':(t<0?'negative':'zero');
+  h+=`<tr><td class="rank">${i+1}</td><td style="text-align:left;padding-left:.4rem">${m.name}</td>`;
+  m.v.forEach(s=>{const sc=s>0?'positive':(s<0?'negative':'zero');h+=`<td class="${sc}">${s>0?'+':''}${s}</td>`;});
+  h+=`<td class="${tc}" style="font-weight:600">${t>0?'+':''}${t}</td></tr>`;
+});
+tbl.innerHTML=h;
+
+// 赛季
+const sl = document.getElementById('seasonList');
+YRS.forEach((y,i)=>{
+  const b=document.createElement('div');b.className='sbox';
+  b.innerHTML=`<h3 style="border-left-color:${C4[i]}">${y}赛季</h3><div class="champ">🏆 冠军：${DATA.champions[y]||'—'}</div><p>${DATA.highlights[y]||''}</p>`;
+  sl.appendChild(b);
+});
+
+// 自动播音乐
+setTimeout(()=>{
+  const a=document.getElementById('bgm');
+  a.play().catch(()=>{});
+},500);
+</script>
+</body>
+</html>
