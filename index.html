@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>甜原雀庄 · 雀神争霸赛</title>
+<script>
+// ===== 数据区 — 改这里就行 =====
+const DATA = {
+  clubName: '甜原雀庄',
+  league: '雀神争霸赛',
+  subtitle: '2023-2026 全赛季',
+  slogan: '以牌会友 · 雀鸣甜原',
+  desc: '甜原雀庄，一个以麻将结缘的小圈子。从2023到2026，四年雀神争霸，有欢笑有遗憾，有连庄有翻盘。',
+  bgm: 'bgm.mp3',           // 背景音乐文件名
+  bgmName: '人生若只若初相見', // 音乐名称
+  photos: ['雀庄合影_1.jpg'],
+  members: [
+    {name:'王筱甜', v:[2662,3190,3683,-94],  tag:'🏆 四冠王 · 总榜第一'},
+    {name:'博哥',   v:[1537,1153,1869,167],  tag:'🥈 铁打亚军'},
+    {name:'老航',   v:[780,982,200,344],     tag:'🥉 稳如老狗'},
+    {name:'雪原',   v:[-76,629,1284,-18],    tag:'🎲 2025单赛季最佳进步'},
+    {name:'基佬',   v:[-53,309,0,0],         tag:''},
+    {name:'二门',   v:[-74,-354,0,0],        tag:'2026休赛'},
+    {name:'意林',   v:[-509,147,-437,0],     tag:''},
+    {name:'小程',   v:[0,-1763,-112,371],    tag:'2026 翻红 +371 ✨'},
+    {name:'奇',     v:[0,-1949,142,-46],     tag:''},
+    {name:'纯柏',   v:[-507,-801,-456,-92],  tag:''},
+    {name:'朱大哥', v:[-1815,-159,-559,253], tag:'2026 强势回归 +253'},
+    {name:'小姜',   v:[-475,-759,-1614,0],   tag:'2026休赛'},
+    {name:'子书',   v:[-267,-1475,-1025,-252],tag:''},
+    {name:'司老师', v:[-1203,-1186,-2200,-605],tag:''},
+  ],
+  // 各赛季冠军
+  champions: {2023:'王筱甜',2024:'王筱甜',2025:'王筱甜',2026:'小程'},
+  // 赛季亮点
+  highlights: {
+    2023:'首届雀神争霸赛，王筱甜以2662分碾压开局',
+    2024:'司老师场均-44分遗憾垫底，王筱甜卫冕成功',
+    2025:'雪原爆发拿下1284分当选赛季最佳进步，王筱甜三连冠',
+    2026:'小程翻红+371夺得赛季冠军，朱大哥休赛回归+253'
+  }
+};
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d0d0d;color:#e8dcc8;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;padding-bottom:4rem}
+.header{text-align:center;padding:2rem 1rem 1rem;position:relative}
+.header h1{font-size:1.8rem;background:linear-gradient(135deg,#d4a853,#f0d080);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.header p{color:#a09078;font-size:.85rem;margin-top:.3rem}
+.header .slogan{color:#d4a853;font-size:.75rem;margin-top:.2rem;opacity:.7}
+.photo-scroll{display:flex;overflow-x:auto;gap:.6rem;padding:.6rem 1rem;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.photo-scroll img{height:200px;border-radius:8px;scroll-snap-align:start;flex-shrink:0;border:1px solid #333}
+.nav{display:flex;margin:.6rem 1rem;border-radius:8px;overflow:hidden;background:#1a1a1a}
+.nav a{flex:1;text-align:center;padding:.6rem 0;font-size:.85rem;color:#a09078;text-decoration:none;border-bottom:2px solid transparent;transition:.2s}
+.nav a.active{color:#d4a853;border-bottom-color:#d4a853;background:rgba(212,168,83,.08)}
+.panel{display:none;padding:0 1rem}
+.panel.active{display:block}
+.section-title{color:#d4a853;font-size:1rem;margin:1rem 0 .6rem;border-left:3px solid #d4a853;padding-left:.6rem}
+.member-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.member-card{background:#1a1a1a;border-radius:8px;padding:.6rem;border:1px solid #2a2a2a}
+.member-card .name{font-size:1rem;font-weight:600;color:#f0e8d8}
+.member-card .score{font-size:1.1rem;color:#d4a853}
+.member-card .tag{font-size:.7rem;color:#7a6a58}
+.member-card .season-break{font-size:.65rem;color:#5a5a5a;margin-top:.2rem}
+.score-table{width:100%;border-collapse:collapse;font-size:.78rem}
+.score-table th{background:#1a1a1a;color:#d4a853;padding:.4rem .3rem;text-align:center;font-weight:500;position:sticky;top:0}
+.score-table td{text-align:center;padding:.35rem .2rem;border-bottom:1px solid #222}
+.score-table tr:nth-child(even){background:#111}
+.score-table .pos{color:#7a6a58;font-size:.7rem}
+.positive{color:#4ecb71}
+.negative{color:#e85454}
+.zero{color:#5a5a5a}
+.season-box{background:#1a1a1a;border-radius:8px;padding:.8rem;margin-bottom:.5rem}
+.season-box h3{color:#d4a853;font-size:.95rem}
+.season-box p{font-size:.8rem;color:#a09078;margin-top:.2rem;line-height:1.5}
+.footer{text-align:center;padding:2rem 1rem;color:#5a5a5a;font-size:.7rem}
+/* ---- 音乐播放器 ---- */
+.music-bar{display:flex;align-items:center;gap:.5rem;margin:.5rem 1rem;padding:.5rem .7rem;background:#1a1a1a;border-radius:8px;border:1px solid #2a2a2a}
+.music-bar .btn{width:32px;height:32px;border-radius:50%;background:#d4a853;border:none;color:#0d0d0d;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.music-bar .btn:hover{background:#e8c868}
+.music-bar .info{flex:1;min-width:0}
+.music-bar .info .name{font-size:.78rem;color:#d4a853;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.music-bar .info .status{font-size:.65rem;color:#5a5a5a}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🀄 甜原雀庄</h1>
+  <p>雀神争霸赛 · 2023-2026</p>
+  <div class="slogan">以牌会友 · 雀鸣甜原</div>
+</div>
+
+<div class="photo-scroll" id="photoArea"></div>
+
+<div class="music-bar" id="musicBar">
+  <button class="btn" id="musicBtn">▶</button>
+  <div class="info">
+    <div class="name" id="musicName">🎵 背景音乐</div>
+    <div class="status" id="musicStatus">点击播放</div>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="#" class="active" data-tab="members">成员</a>
+  <a href="#" data-tab="board">总榜</a>
+  <a href="#" data-tab="seasons">赛季</a>
+</div>
+
+<div class="panel active" id="tab-members">
+  <div class="section-title">👥 雀庄全员 · 14人</div>
+  <div class="member-grid" id="memberGrid"></div>
+</div>
+
+<div class="panel" id="tab-board">
+  <div class="section-title">🏆 总战绩榜 · 2023-2026</div>
+  <div style="overflow-x:auto"><table class="score-table" id="boardTable"></table></div>
+</div>
+
+<div class="panel" id="tab-seasons">
+  <div class="section-title">📊 赛季详情</div>
+  <div id="seasonList"></div>
+</div>
+
+<div class="footer">甜原雀庄 · 以牌会友</div>
+
+<script>
+const YRS = ['2023','2024','2025','2026'];
+const COLORS = ['#e85454','#e07848','#d4a853','#4ecb71'];
+
+function render(){
+  // 合影
+  const pa = document.getElementById('photoArea');
+  pa.innerHTML = '';
+  DATA.photos.forEach(p=>{
+    const img = document.createElement('img');
+    img.src = p;
+    img.alt = '雀庄合影';
+    img.onerror = function(){ this.style.display='none'; };
+    pa.appendChild(img);
+  });
+  if(!DATA.photos.length) pa.innerHTML='<div style="color:#555;padding:1rem;font-size:.8rem">暂无合影</div>';
+
+  // 成员卡片 (按总战绩排序)
+  const mg = document.getElementById('memberGrid');
+  mg.innerHTML = '';
+  const sorted = [...DATA.members].sort((a,b)=>{
+    const ta = a.v.reduce((s,x)=>s+x,0);
+    const tb = b.v.reduce((s,x)=>s+x,0);
+    return tb - ta;
+  });
+  sorted.forEach((m,i)=>{
+    const total = m.v.reduce((s,x)=>s+x,0);
+    const card = document.createElement('div');
+    card.className = 'member-card';
+    const cls = total>0?'positive':(total<0?'negative':'zero');
+    card.innerHTML = `<div class="name">${i+1}. ${m.name}</div>
+      <div class="score ${cls}">${total>0?'+':''}${total}</div>
+      <div class="tag">${m.tag||' '}</div>
+      <div class="season-break">${YRS.map((y,j)=>`${y}: ${m.v[j]}`).join(' · ')}</div>`;
+    mg.appendChild(card);
+  });
+
+  // 总榜表格
+  const tbl = document.getElementById('boardTable');
+  let html = '<tr><th>#</th><th>选手</th>';
+  YRS.forEach(y=>html+=`<th>${y}</th>`);
+  html += '<th>总计</th></tr>';
+  sorted.forEach((m,i)=>{
+    const total = m.v.reduce((s,x)=>s+x,0);
+    const cls = total>0?'positive':(total<0?'negative':'zero');
+    html += `<tr><td class="pos">${i+1}</td><td style="text-align:left;padding-left:.5rem">${m.name}</td>`;
+    m.v.forEach((s,j)=>{
+      const sc = s>0?'positive':(s<0?'negative':'zero');
+      html += `<td class="${sc}">${s>0?'+':''}${s}</td>`;
+    });
+    html += `<td class="${cls}" style="font-weight:600">${total>0?'+':''}${total}</td></tr>`;
+  });
+  tbl.innerHTML = html;
+
+  // 赛季详情
+  const sl = document.getElementById('seasonList');
+  sl.innerHTML = '';
+  YRS.forEach((y,i)=>{
+    const box = document.createElement('div');
+    box.className = 'season-box';
+    box.innerHTML = `<h3 style="border-left:3px solid ${COLORS[i]};padding-left:.6rem">${y}赛季 · 🏆 ${DATA.champions[y]||'—'}</h3>
+      <p>${DATA.highlights[y]||''}</p>`;
+    sl.appendChild(box);
+  });
+}
+
+// Tab 切换
+document.querySelectorAll('.nav a').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    document.querySelectorAll('.nav a').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    a.classList.add('active');
+    document.getElementById('tab-'+a.dataset.tab).classList.add('active');
+  });
+});
+
+render();
+
+// ---- 音乐播放器 ----
+(function(){
+  const audio = new Audio(DATA.bgm);
+  audio.loop = true;
+  const btn = document.getElementById('musicBtn');
+  const status = document.getElementById('musicStatus');
+  const nameEl = document.getElementById('musicName');
+  let playing = false;
+
+  nameEl.textContent = '🎵 ' + (DATA.bgmName || '背景音乐');
+
+  btn.addEventListener('click',function(){
+    togglePlay();
+  });
+
+  // 进页面自动播放
+  setTimeout(()=>{ togglePlay(); }, 500);
+
+  function togglePlay(){
+    if(playing){
+      audio.pause();
+      btn.textContent = '▶';
+      status.textContent = '已暂停';
+    } else {
+      audio.play().then(()=>{
+        btn.textContent = '⏸';
+        status.textContent = '播放中';
+      }).catch(()=>{
+        status.textContent = '点一下 ▶ 播放';
+      });
+    }
+    playing = !playing;
+  }
+})();
+</script>
+</body>
+</html>
